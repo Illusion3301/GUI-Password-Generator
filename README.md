@@ -37,7 +37,7 @@ pip install -r requirements.txt
 Run the application using the following command:
 
 ```
-python password_generator_app.py
+python PWDGenerator.py
 ```
 
 Or double click the program
