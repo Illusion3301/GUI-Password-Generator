@@ -17,18 +17,18 @@ A modern and attractive GUI Password Generator application built with Python and
 ![](https://i.imgur.com/cAYXSTM.png)
 
 ## Installation
-- Clone the repository to your local machine:
+Clone the repository to your local machine:
 
 ```
 git clone https://github.com/Illusion3301/GUI-Password-Generator
 ```
-- Change into the project directory:
+Change into the project directory:
 
 ```
 cd GUI-Password-Generator
 ```
 
-- Install the required dependencies:
+Install the required dependencies:
 
 ```
 pip install -r requirements.txt
