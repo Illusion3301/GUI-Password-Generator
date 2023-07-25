@@ -65,4 +65,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 <hr/>
 
-#### Actual version: 1.0.0
+### Actual version: 1.0.0
