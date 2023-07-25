@@ -63,4 +63,4 @@ Contributions are welcome! If you find any issues or have suggestions for improv
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-### Actual version: 1.0.0
+#### Actual version: 1.0.0
