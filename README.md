@@ -61,7 +61,7 @@ Or double click the program
 Contributions are welcome! If you find any issues or have suggestions for improvements, feel free to create a pull request.
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the BSD 3-Clause License - see the LICENSE file for details.
 
 <hr/>
 
