@@ -29,11 +29,11 @@ class PasswordGeneratorApp:
         self.style.map("TCheckbutton", background=[("active", "gray20")])
 
         # Add icons to buttons
-        self.generate_icon = Image.open("key.png")
+        self.generate_icon = Image.open("./key.png")
         self.generate_icon = self.generate_icon.resize((20, 20), Image.LANCZOS)  # Use Image.LANCZOS
         self.generate_icon = ImageTk.PhotoImage(self.generate_icon)
 
-        self.copy_icon = Image.open("clipboard.png")
+        self.copy_icon = Image.open("./clipboard.png")
         self.copy_icon = self.copy_icon.resize((20, 20), Image.LANCZOS)  # Use Image.LANCZOS
         self.copy_icon = ImageTk.PhotoImage(self.copy_icon)
 
@@ -48,6 +48,9 @@ class PasswordGeneratorApp:
         self.exclude_ambiguous_var = tk.BooleanVar(value=False)
 
         self.create_widgets()
+        
+        self.password_history = []
+        self.load_password_history()
 
     def create_widgets(self):
         password_label = ttk.Label(self.root, text="Password:")
@@ -122,12 +125,33 @@ class PasswordGeneratorApp:
         if len(characters) == 0:
             messagebox.showerror("Error", "The selected options result in an empty character set.")
             return
+        elif password_length > 256:
+            messagebox.showerror("Error", "Password length cannot exceed 256 characters.")
+            return
 
         password = ''.join(random.choice(characters) for _ in range(password_length))
         self.password_var.set(password)
+        self.password_history.append(password)
+        self.save_password_history()
+        
+        strength = self.evaluate_strength(password)
+        messagebox.showinfo("Strength", f"Password Strength: {strength}")
         
         pyperclip.copy(password)
         messagebox.showinfo("Success", "Password generated and copied successfully!")
+    
+    def save_password_history(self):
+        with open("pwd_history.txt", "w") as file:
+            for password in self.password_history:
+                file.write(password + "\n")
+        
+    def load_password_history(self):
+        try:
+            with open("pwd_history.txt", "r") as file:
+                self.password_history = file.read().splitlines()
+        except FileNotFoundError:
+            # If the file is not found, no need to raise an error; the history will remain empty
+            pass
 
     def copy_to_clipboard(self):
         password = self.password_var.get()
@@ -136,6 +160,24 @@ class PasswordGeneratorApp:
             messagebox.showinfo("Success", "Password copied to clipboard!")
         else:
             messagebox.showwarning("Warning", "No password generated yet!")
+
+    def evaluate_strength(self, password):
+        # Evaluate password strength based on length and character types
+        length_score = min(1, len(password) / 12)  # Normalized length score between 0 and 1
+        uppercase_score = 1 if any(c.isupper() for c in password) else 0
+        lowercase_score = 1 if any(c.islower() for c in password) else 0
+        digit_score = 1 if any(c.isdigit() for c in password) else 0
+        special_score = 1 if any(c for c in password if c in string.punctuation) else 0
+
+        # Total strength score (normalized between 0 and 1)
+        total_score = (length_score + uppercase_score + lowercase_score + digit_score + special_score) / 5
+
+        if total_score >= 0.8:
+            return "Strong"
+        elif total_score >= 0.5:
+            return "Medium"
+        else:
+            return "Weak"
 
 if __name__ == "__main__":
     root = tk.Tk()
